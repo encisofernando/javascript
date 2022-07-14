@@ -4,6 +4,8 @@
   box-sizing: border-box;
 }
 
+@import url('https://fonts.google.com/specimen/Quicksand#standard-styles');
+
 body {
   background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
   color: #fff;
