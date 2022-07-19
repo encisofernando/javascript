@@ -20,6 +20,11 @@
             </div>
       </header>
       <main>
+
+        <div id="mostrarFormulario">
+      
+        </div>
+
             <div class="container">
                 <form>
                   <div class="form-cont">
@@ -28,26 +33,26 @@
                   </div>
                   <div class="form-row">
                     <div class="col">
-                      <input type="text" class="form-control" placeholder="Concepto de Ingreso N° 1">
+                      <input id="ing1" type="text" class="form-control" placeholder="Concepto de Ingreso N° 1">
                     </div>
                     <div class="col">                      
-                      <input type="number" class="form-control" placeholder="Monto del Ingreso">
+                      <input id="mon-ing1" type="number" class="form-control" placeholder="Monto del Ingreso">
                     </div>
                   </div>
                   <div class="form-row">
                     <div class="col">
-                      <input type="text" class="form-control" placeholder="Concepto de Ingreso N° 2">
+                      <input id="ing2" type="text" class="form-control" placeholder="Concepto de Ingreso N° 2">
                     </div>
                     <div class="col">
-                      <input type="number" class="form-control" placeholder="Monto del Ingreso">
+                      <input id="mon-ing2" type="number" class="form-control" placeholder="Monto del Ingreso">
                     </div>
                   </div>
                   <div class="form-row">
                     <div class="col">
-                      <input type="text" class="form-control" placeholder="Concepto de Ingreso N° 3">
+                      <input id="ing3" type="text" class="form-control" placeholder="Concepto de Ingreso N° 3">
                     </div>
                     <div class="col">
-                      <input type="number" class="form-control" placeholder="Monto del Ingreso">
+                      <input id="mon-ing3" type="number" class="form-control" placeholder="Monto del Ingreso">
                     </div>
                   </div>
                   <div class="form-cont">
@@ -56,31 +61,31 @@
                   </div>
                   <div class="form-row">
                     <div class="col">
-                      <input type="text" class="form-control" placeholder="Concepto del Egreso N° 1">
+                      <input id="egr1" type="text" class="form-control" placeholder="Concepto del Egreso N° 1">
                     </div>
                     <div class="col">
-                      <input type="text" class="form-control" placeholder="Monto del Egreso">
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="col">
-                      <input type="text" class="form-control" placeholder="Concepto del Egreso N° 2">
-                    </div>
-                    <div class="col">
-                      <input type="text" class="form-control" placeholder="Monto del Egreso">
+                      <input id="mon-egr1" type="text" class="form-control" placeholder="Monto del Egreso">
                     </div>
                   </div>
                   <div class="form-row">
                     <div class="col">
-                      <input type="text" class="form-control" placeholder="Concepto del Egreso N° 3">
+                      <input id="egr2" type="text" class="form-control" placeholder="Concepto del Egreso N° 2">
                     </div>
                     <div class="col">
-                      <input type="text" class="form-control" placeholder="Monto del Egreso">
+                      <input id="mon-egr2" type="text" class="form-control" placeholder="Monto del Egreso">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col">
+                      <input id="egr3" type="text" class="form-control" placeholder="Concepto del Egreso N° 3">
+                    </div>
+                    <div class="col">
+                      <input id="mon-egr3" type="text" class="form-control" placeholder="Monto del Egreso">
                     </div>
                   </div>
                   <div>
                     <div class="boton">
-                      <button type="submit" class="btn btn-primary mb-2">Calcular</button>
+                      <button id="boton" type="submit" class="btn btn-primary mb-2" onclick="mostrarDatos()">Calcular</button>
                     </div>
                   </div>                  
                 </form>
