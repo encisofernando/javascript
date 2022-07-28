@@ -1,115 +1,193 @@
+//** SEGUNDA ENTREGA PROYECTO FINAL **//
 
-totalIngresos = 0;
-totalEgresos = 0;
+//**** DECLARACION DE VARIABLES GLOBALES ****//
+let cantidad = 0; 
+let carritoProductos =
+JSON.parse(localStorage.getItem("carritoProductos")) || []; 
+let codigo = 0; 
+let confirmacion; 
+let itemBorrar; 
+let productos; 
+let total = 0; 
+const btnAceptar = document.querySelector('#btnAceptar'); 
+const btnCarro1 = document.querySelector("#btnCarro1"); 
+const btnCarro2 = document.querySelector("#btnCarro2"); 
+const btnCarro3 = document.querySelector("#btnCarro3"); 
+const btnCarro4 = document.querySelector("#btnCarro4"); 
+const btnComprar = document.querySelector("#btnComprar"); 
+const btnDeletAll = document.querySelector("#btnDeletAll"); 
+const cantidadTotal = document.querySelector("#cantidad-total"); 
+const montoTotal = document.querySelector("#montoTotal"); 
+const printCarritoHtml = document.querySelector("#printHtml"); 
 
+//**** HABILITACION Y COMANDO DEL MENU ****//
 
-// FUNCIONES PARA SUMAR
+    $("#pills-productos-tab").on("click", function (e) {
+    e.preventDefault();
+    $('#mensajes-alerta').empty();
+    $(this).tab("show");
+    });
 
-function sumarIngresos() {
-    for (let i = 0; i < misIngresos.length; i++) {
-        totalIngresos = totalIngresos + misIngresos[i].monto
+    $("#pills-carrito-tab").on("click", function (e) {
+    e.preventDefault();
+    $('#mensajes-alerta').empty();
+    $(this).tab("show");
+    });
+
+//**** FUNCION DE IMPRESIÓN ITEMS EN HTML ****//
+const imprimirCarritoEnHtml = () => {
+    while (printCarritoHtml.firstChild) { 
+    printCarritoHtml.removeChild(printCarritoHtml.firstChild);
     }
-    return totalIngresos;
-}
+    carritoProductos.forEach((item) => {
+    const precioCantidad = item.precio * item.cantidad;
+    productos = document.createElement("tr");
+    productos.innerHTML = `<th scope="row"><img src=${item.portada} width="70rem"></th>
+                                <td>${item.titulo}</td>
+                                <td>${item.plataforma}</td>
+                                <td>${item.cantidad}</td>
+                                <td>$${precioCantidad}</td>
+                                <td><button id="${item.codigo}" type="button" class="borrar btn btn-danger">X</button></td>`; 
 
-function sumarEgresos() {
-    for (let i = 0; i < misEgresos.length; i++) {
-        totalEgresos = totalEgresos + misEgresos[i].monto
+    printCarritoHtml.appendChild(productos);
+    });
+    montoTotal.innerHTML = ` $${montoTotalProductos()}`; 
+    borrarItem();
+    if (carritoProductos.length !== 0) { 
+        cantidadTotal.innerHTML = `<span class="badge badge-pill bg-danger">${cantidadTotalProductos()}</span>`;
+    } else {
+    cantidadTotal.innerHTML = ""; 
     }
-    return totalEgresos;
-}
+};
 
-// CLASE CONSTRUCTORA DE OBJETOS
-
-class Dinero {
-    constructor(concepto, monto) {
-        this.concepto = concepto.toUpperCase();
-        this.monto = parseInt(monto);
+//**** FUNCION MONTO TOTAL PRODUCTOS ****//
+const montoTotalProductos = () => {
+    total = 0;
+    for (item of carritoProductos) {
+    total += item.precio * item.cantidad; 
     }
-}
+    return total;
+};
+//**** FUNCION CONTABILIZAR PRODUCTOS ****//
+const cantidadTotalProductos = () => {
+    total = 0;
+    for (item of carritoProductos) {
+    total += item.cantidad; 
+    }
+    return total;
+};
 
-// ARRAYS
+//**** FUNCION BORRADO DE ITEM POR BOTON ****//
+const borrarItem = () => {
+  const btnBorrarItem = document.querySelectorAll("tr button"); 
+    btnBorrarItem.forEach((btn) => { 
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        itemBorrar = parseInt(btn.id); 
+        carritoProductos = JSON.parse(localStorage.getItem("carritoProductos")); 
+        const indexItemBorrar = carritoProductos.findIndex(
+        (item) => item.codigo === itemBorrar
+        );
+        carritoProductos.splice(indexItemBorrar, 1); 
+        localStorage.setItem(
+        "carritoProductos",
+        JSON.stringify(carritoProductos)
+        ); 
+        imprimirCarritoEnHtml(); 
+      });
+    });
+};
 
-const misIngresos = [];
-const misEgresos = [];
+//**** FUNCION DE FILTRADO CODIGO ITEMS ****//
+const contarRepeticion = (codigo) =>
+  carritoProductos.filter((producto) => producto.codigo === codigo); 
+  
+//**** FUNCION VACIAR CARRITO ****//
+function vaciarCarrito () {
+    if (carritoProductos.length > 0) {
+    carritoProductos = [];
+    localStorage.clear();
+    imprimirCarritoEnHtml(); 
+    }
+  }
 
-// CARGA DE INGRESOS
 
-for (let i = 1; i < 11; i++) {
-    alert("Concepto del Ingreso N° " + i)
-    let conceptoIngreso = prompt("Concepto del ingreso. Si desea omitir, escriba " +"ESC");
-    conceptoIngreso = conceptoIngreso.toUpperCase();
-    
-    if (conceptoIngreso != "ESC") {
-        let montoIngreso = prompt("Monto del Ingreso:");
-        
-        while (isNaN(montoIngreso) == true || parseInt(montoIngreso) < 0) {
-            alert("ERROR. Sólo los carácteres numéricos mayores a 0 son válidos.");
-            montoIngreso = prompt("Coloque nuevamente el monto del ingreso:");
-            if (isNaN(montoIngreso) == false && (parseInt(montoIngreso) > 0)) {
-                break;
-            }
+imprimirCarritoEnHtml(carritoProductos); 
+
+btnCarro1.addEventListener("click", (e) => { 
+  e.preventDefault();
+  cantidad = contarRepeticion(1).length + 1; 
+    const item1 = new Carrito("Zapatilla", 1, 2800, cantidad, '41', "/img/zapatillas.webp"); 
+  ingresoCarrito(item1); 
+}); 
+btnCarro2.addEventListener("click", (e) => {
+  e.preventDefault();
+  cantidad = contarRepeticion(2).length + 1; 
+    const item2 = new Carrito("Pantalon", 2, 2000, cantidad, '44', "/img/pantalon-de-hombre-venture.jpg"); 
+  ingresoCarrito(item2); 
+  //
+}); 
+btnCarro3.addEventListener("click", (e) => { 
+  e.preventDefault();
+  cantidad = contarRepeticion(3).length + 1; 
+    const item3 = new Carrito("Remera", 3, 2500, cantidad, 'M', "/img/remera.jfif"); 
+  ingresoCarrito(item3); 
+}); 
+btnCarro4.addEventListener("click", (e) => { 
+  e.preventDefault();
+  cantidad = contarRepeticion(4).length + 1; 
+    const item4 = new Carrito("Conjunto", 4, 2800, cantidad, 'XL', "/img/conjunto.webp"); 
+  ingresoCarrito(item4); 
+
+}); 
+
+
+const ingresoCarrito = (item) => {
+    const existeItem = carritoProductos.some(
+    (producto) => producto.codigo === item.codigo
+  ); 
+    if (existeItem) {
+    const productos = carritoProductos.map((producto) => {
+      
+        if (producto.codigo === item.codigo) {
+        producto.cantidad++;
+        return producto; 
+        } else {
+        return producto; 
         }
-        misIngresos.push(new Dinero(conceptoIngreso, montoIngreso));
+    });
+    carritoProductos = [...productos]; 
+    } else {
+    carritoProductos = [...carritoProductos, item]; 
     }
-    else {
-        break;
-    }
-}
+  localStorage.setItem("carritoProductos", JSON.stringify(carritoProductos)); 
+  imprimirCarritoEnHtml(); 
+};
 
-// CARGA DE EGRESOS
-
-for (let i = 1; i < 11; i++) {
-    alert("Concepto del Gasto N° " + i)
-    let conceptoGasto = prompt("Concepto del gasto. Si desea omitir, escriba " +"ESC");
-    conceptoGasto = conceptoGasto.toUpperCase();
+//**** OBJECT CONSTRUCTOR ****//
+class Carrito {
+    constructor(titulo, codigo, precio, cantidad, plataforma, portada) {
     
-    if (conceptoGasto != "ESC") {
-        let montoGasto = prompt("Monto del gasto:");
-        
-        while (isNaN(montoGasto) == true || parseInt(montoGasto) < 0) {
-            alert("ERROR. Sólo los carácteres numéricos mayores a 0 son válidos.");
-            montoGasto = prompt("Coloque nuevamente el monto del gasto:");
-            if (isNaN(montoGasto) == false && (parseInt(montoGasto) > 0)) {
-                break;
-            }
-        }
-        misEgresos.push(new Dinero(conceptoGasto, montoGasto));
-    }
-    else {
-        break;
+    this.titulo = titulo;
+    this.codigo = codigo;
+    this.precio = precio;
+    this.cantidad = cantidad;
+    this.plataforma = plataforma;
+    this.portada = portada;
     }
 }
 
+btnDeletAll.addEventListener("click", vaciarCarrito); 
 
-// MUESTRA DE SALDOS
-
-sumarIngresos();
-sumarEgresos();
-let saldo = totalIngresos - totalEgresos;
-
-alert(
-    "Tus ingresos totales del mes son: $" + totalIngresos +"\n"+
-    "Tus gastos de este mes, suman: $" +totalEgresos +"\n"+
-    "Por lo tanto, tu saldo es de: $" + saldo);
-
-
-// MOSTRAR INFORMACIÓN DETALLADA
-
-let mensajeIngresos = "";
-for (let i = 0 ; i < misIngresos.length; i++){
-    mensajeIngresos += "Concepto: " +misIngresos[i].concepto + " | Monto: $" +misIngresos[i].monto + '\n';
+btnComprar.addEventListener("click", () => { 
+  if(carritoProductos.length !== 0) {
+    confirmacion = new bootstrap.Modal(document.querySelector('#ventanaConfirmacion')); 
+    confirmacion.show(); 
+    vaciarCarrito(); 
+    $('#mensajes-alerta').append('<div class="alert alert-success" role="alert">Compra realizada con exito.'); 
+    btnAceptar.addEventListener("click", () => {
+      confirmacion.hide(); 
+      
+  });
 }
-
-let mensajeEgresos = "";
-for (let i = 0 ; i < misEgresos.length; i++){
-    mensajeEgresos += "Concepto: " +misEgresos[i].concepto + " | Monto: $" +misEgresos[i].monto + '\n';
-}
-
-alert(
-    "\n"
-    +"Tus Ingresos:" +"\n" 
-    +mensajeIngresos +"\n" 
-    +"\n"
-    +"Tus Egresos" +"\n"
-    +mensajeEgresos)
+}); 
